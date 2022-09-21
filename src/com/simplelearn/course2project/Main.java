@@ -10,12 +10,11 @@ import java.util.Scanner;
 
 public class Main {
 	static Scanner scan = new Scanner(System.in);
-
 	public static void main(String[] args) throws IOException {
 		System.out.println("--------------- Welcome to Company Lockers Pvt. Ltd ---------------\n"
 				+ "Application Name : LockedMe.com\n" + "---------------Developer Details---------------\n"
 				+ "Name: Ashish Kumar Pathak \n" + "Designation: JAVA Developer\n" + "Date: 20-09-2022");
-
+		//While loop as True for Application to run until user give input to exit the Application 
 		while (true) {
 			System.out.println("----------MAIN MENU----------");
 			System.out.println("Enter 1: To get file names in ascending order");
@@ -23,9 +22,10 @@ public class Main {
 			System.out.println("Enter 3: Close the Application");
 			System.out.println("Enter your choice below");
 			int choice = scan.nextInt();
+			//Switch is used for user to give the choice which one to perform.
 			switch (choice) {
 			case 1: {
-				accendingOrderFiles();
+				ascendingOrderFiles();
 				break;
 			}
 			case 2: {
@@ -41,7 +41,7 @@ public class Main {
 			}
 		}
 	}
-
+	//BusinessLevelOperation() Method is used to perform Adding, deletion,searching of file in the directory and a option to return back to main menu.
 	private static void businessLevelOperation() throws IOException {
 		System.out.println("Select Any one to perform Business Level Operations");
 		System.out.println("Enter 1: To add a file");
@@ -50,6 +50,7 @@ public class Main {
 		System.out.println("Enter 4: To go back to main menu ");
 		System.out.println("Enter your choice :");
 		int businessLevelOperationChoice = scan.nextInt();
+		//Switch is used to perform different type of task - input such given by the user.
 		switch (businessLevelOperationChoice) {
 		case 1: {
 			addFile();
@@ -70,13 +71,15 @@ public class Main {
 		default:
 			System.out.println("Kindly enter valid input");
 		}
+		//If condition is used here so that the application should not break after perfrom any of above task and return to main menu, as there is a option 4 to go back to main menu. 
 		if (businessLevelOperationChoice != 4 || businessLevelOperationChoice > 4) {
+			//Recalling the businessLevelOperation(); until user gives 4 to come back to main menu
 			businessLevelOperation();
 		}
 	}
-
+	//searchAFile() method is used Linear Searching of given input to search a file. 
 	private static void searchAFile() {
-		File fileDir = new File("C:\\Users\\ashis\\eclipse-workspace\\AssessmentProject\\Files\\");
+		File fileDir = new File(System.getProperty("user.dir")+"//Files");
 		if (fileDir.isDirectory()) {
 			System.out.println("Enter file name to search");
 			String searchFileName = scan.next();
@@ -85,41 +88,42 @@ public class Main {
 			boolean flag = false;
 			while (searchIterate.hasNext()) {
 				String tempString = searchIterate.next().toString();
-				if (searchFileName.equalsIgnoreCase(tempString)) {
+				if (searchFileName.equals(tempString)) {
 					flag = true;
 				}
 			}
 			if (flag == true) {
-				System.out.println(searchFileName + " is available");
+				System.out.println(searchFileName + " File is available");
 			} else {
-				System.out.println(searchFileName + " is not available");
+				System.out.println("Can't find the given file name "+"'"+searchFileName+"'"+" please try again with case sensitive");
+				searchAFile();
 			}
 		}
 	}
+	//deleteFile() is used a input given by user and deletes the file from directory
 	private static void deleteFile() {
 		System.out.println("Enter file name for delete");
 		String deleteFileName = scan.next();
-		File deleteFileDirectory = new File(
-				"C:\\Users\\ashis\\eclipse-workspace\\AssessmentProject\\Files\\" + deleteFileName);
+		File deleteFileDirectory = new File(System.getProperty("user.dir")+"//Files" + deleteFileName);
 		if (deleteFileDirectory.delete())
 			System.out.println(deleteFileName + " is deleted");
 		else
 			System.out.println(deleteFileName + "is not deleted as file is not found in directory");
-
 	}
-
+	//addFile() Method is used to add a file given name by user to the directory.
 	private static void addFile() throws IOException {
 		System.out.println("Enter your file name");
 		String fileName = scan.next();
-		File newFile = new File("C:\\Users\\ashis\\eclipse-workspace\\AssessmentProject\\Files\\" + fileName);
+		File newFile = new File(System.getProperty("user.dir")+"//Files" + fileName);
 		if (newFile.createNewFile())
 			System.out.println("File is created\n");
 		else
 			System.out.println("File is alredy exist\n");
 	}
-
-	private static void accendingOrderFiles() throws IOException {
-		File fileDir = new File("C:\\Users\\ashis\\eclipse-workspace\\AssessmentProject\\Files\\");
+	//ascendingOrderFiles() Method is used to retrive the files from the directory if directory found and then stored in a list as arrayList 
+	//then using Collection.sort() method it gets sorted then using Iterator we iterate the data from the list to String format. else the directory is empty or not found. 
+	private static void ascendingOrderFiles() throws IOException {
+		File fileDir = new File(System.getProperty("user.dir")+"//Files");
 		if (fileDir.isDirectory()) {
 			List<String> listFile = Arrays.asList(fileDir.list());
 			Collections.sort(listFile);
@@ -133,5 +137,4 @@ public class Main {
 			System.out.println(fileDir.getAbsolutePath() + " is not a directory");
 		}
 	}
-
 }
